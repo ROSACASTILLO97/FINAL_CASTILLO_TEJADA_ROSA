@@ -9,9 +9,9 @@ df['total'] = df['valor'] + df['IGV']
 
 # Clasificar productos según su valor original
 def clasificar(valor):
-    if valor < 100:
+    if valor < 200:
         return 'bajo'
-    elif valor < 300:
+    elif valor < 400:
         return 'medio'
     else:
         return 'alto'
