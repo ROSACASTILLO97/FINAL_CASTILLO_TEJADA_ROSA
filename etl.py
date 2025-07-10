@@ -1,17 +1,23 @@
 import pandas as pd
 
-# Leer los datos
+# Leer el archivo de entrada
 df = pd.read_csv('input.csv')
 
-# Transformaciones:
-# - Redondear los precios
-# - Calcular IGV (18%)
-# - Clasificar el precio (bajo, medio, alto)
-df['valor_redondeado'] = df['valor'].round()
-df['igv'] = df['valor'] * 0.18
-df['total_con_igv'] = df['valor'] + df['igv']
-df['clasificacion'] = pd.cut(df['valor'], bins=[0, 200, 400, float('inf')], labels=['bajo', 'medio', 'alto'])
+# Calcular IGV (18%) y total
+df['IGV'] = df['valor'] * 0.18
+df['total'] = df['valor'] + df['IGV']
 
-# Guardar el resultado
+# Clasificar productos según su valor original
+def clasificar(valor):
+    if valor < 100:
+        return 'bajo'
+    elif valor < 300:
+        return 'medio'
+    else:
+        return 'alto'
+
+df['clasificación'] = df['valor'].apply(clasificar)
+
+# Guardar el resultado en output.csv
 df.to_csv('output.csv', index=False)
-print("✅ ETL completado correctamente.")
+print("✅ ETL completado con clasificación y cálculo de IGV.")
